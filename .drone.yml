@@ -2,7 +2,6 @@ pipeline:
   image-v1.21.0:
     image: 130607246975.dkr.ecr.eu-central-1.amazonaws.com/drone-plugins/gyg-registry
     group: default
-    privileged: true
     context: ./
     dockerfile: ./v1.21.0/Dockerfile
     repo: 130607246975.dkr.ecr.eu-central-1.amazonaws.com/envoy/router-check-tool
