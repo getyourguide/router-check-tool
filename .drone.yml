@@ -32,3 +32,4 @@ pipeline:
     # The tag of the image.
     tags:
       - test
+      
