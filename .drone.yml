@@ -1,6 +1,22 @@
 pipeline:
   # The step name
-  image-v1.21.0:
+  #image-v1.21.0:
+    # The image the step will run
+    #image: 130607246975.dkr.ecr.eu-central-1.amazonaws.com/drone-plugins/gyg-registry
+    # To allow parallelism
+    #group: default
+    # Runs the docker build as root
+    #privileged: true
+    # docker build context
+    #context: ./
+    # docker file path related to context
+    #dockerfile: ./v1.21.0/Dockerfile
+    # The image repo to push the image built
+    #repo: 130607246975.dkr.ecr.eu-central-1.amazonaws.com/envoy/router-check-tool
+    # The tag of the image.
+    #tags:
+      #- v1.21.0
+  image-test:
     # The image the step will run
     image: 130607246975.dkr.ecr.eu-central-1.amazonaws.com/drone-plugins/gyg-registry
     # To allow parallelism
@@ -10,9 +26,9 @@ pipeline:
     # docker build context
     context: ./
     # docker file path related to context
-    dockerfile: ./v1.21.0/Dockerfile
+    dockerfile: ./Dockerfile
     # The image repo to push the image built
     repo: 130607246975.dkr.ecr.eu-central-1.amazonaws.com/envoy/router-check-tool
     # The tag of the image.
     tags:
-      - v1.21.0
+      - test
