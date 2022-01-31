@@ -9,7 +9,7 @@ WORKDIR /envoy
 
 RUN git checkout ${ENVOY_TAG}
 
-RUN bazel build --verbose_failures --sandbox_debug --subcommands //test/tools/router_check:router_check_tool
+RUN bazel build --jobs=6 --verbose_failures --sandbox_debug --subcommands //test/tools/router_check:router_check_tool
 
 FROM ubuntu
 
@@ -17,5 +17,7 @@ COPY --from=builder /envoy/bazel-bin/test/tools/router_check/router_check_tool /
 RUN apt-get update && apt-get install -y \
   libatomic1 \
   && rm -rf /var/lib/apt/lists/*
+
+USER nobody:nogroup
 
 ENTRYPOINT [ "/usr/local/bin/router_check_tool"]
