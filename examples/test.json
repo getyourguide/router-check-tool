@@ -1,0 +1,15 @@
+{
+    "tests": [
+      {
+        "test_name": "simpletest",
+        "input": {
+          "authority": "www.example.com",
+          "path": "/",
+          "method": "GET"
+        },
+        "validate": {
+          "cluster_name": "outbound|80||service-a.service-a.svc.cluster.local"
+        }
+      }
+    ]
+  }
