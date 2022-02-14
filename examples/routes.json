@@ -1,0 +1,120 @@
+{
+    "name": "http.80",
+    "virtual_hosts": [
+      {
+        "name": "service-a.service-a.svc.cluster.local:80",
+        "domains": [
+          "service-a.service-a.svc.cluster.local",
+          "service-a.service-a.svc.cluster.local:*"
+        ],
+        "routes": [
+          {
+            "match": {
+              "prefix": "/"
+            },
+            "route": {
+              "cluster": "outbound|80||service-a.service-a.svc.cluster.local",
+              "timeout": "0s",
+              "retry_policy": {
+                "retry_on": "connect-failure,refused-stream,unavailable,cancelled,retriable-status-codes",
+                "num_retries": 2,
+                "host_selection_retry_max_attempts": "5",
+                "retriable_status_codes": [
+                  503
+                ]
+              },
+              "max_grpc_timeout": "0s"
+            },
+            "metadata": {
+              "filter_metadata": {
+                "istio": {
+                  "config": "/apis/networking.istio.io/v1alpha3/namespaces/service-a/virtual-service/service-a"
+                }
+              }
+            },
+            "decorator": {
+              "operation": "service-a.service-a.svc.cluster.local:80/*"
+            }
+          }
+        ],
+        "include_request_attempt_count": true
+      },
+      {
+        "name": "service-a.service-a:80",
+        "domains": [
+          "service-a.service-a",
+          "service-a.service-a:*"
+        ],
+        "routes": [
+          {
+            "match": {
+              "prefix": "/"
+            },
+            "route": {
+              "cluster": "outbound|80||service-a.service-a.svc.cluster.local",
+              "timeout": "0s",
+              "retry_policy": {
+                "retry_on": "connect-failure,refused-stream,unavailable,cancelled,retriable-status-codes",
+                "num_retries": 2,
+                "host_selection_retry_max_attempts": "5",
+                "retriable_status_codes": [
+                  503
+                ]
+              },
+              "max_grpc_timeout": "0s"
+            },
+            "metadata": {
+              "filter_metadata": {
+                "istio": {
+                  "config": "/apis/networking.istio.io/v1alpha3/namespaces/service-a/virtual-service/service-a"
+                }
+              }
+            },
+            "decorator": {
+              "operation": "service-a.service-a.svc.cluster.local:80/*"
+            }
+          }
+        ],
+        "include_request_attempt_count": true
+      },
+      {
+        "name": "www.example.com:80",
+        "domains": [
+          "www.example.com",
+          "www.example.com:*"
+        ],
+        "routes": [
+          {
+            "match": {
+              "prefix": "/"
+            },
+            "route": {
+              "cluster": "outbound|80||service-a.service-a.svc.cluster.local",
+              "timeout": "0s",
+              "retry_policy": {
+                "retry_on": "connect-failure,refused-stream,unavailable,cancelled,retriable-status-codes",
+                "num_retries": 2,
+                "host_selection_retry_max_attempts": "5",
+                "retriable_status_codes": [
+                  503
+                ]
+              },
+              "max_grpc_timeout": "0s"
+            },
+            "metadata": {
+              "filter_metadata": {
+                "istio": {
+                  "config": "/apis/networking.istio.io/v1alpha3/namespaces/service-a/virtual-service/site"
+                }
+              }
+            },
+            "decorator": {
+              "operation": "service-a.service-a.svc.cluster.local:80/*"
+            }
+          }
+        ],
+        "include_request_attempt_count": true
+      }
+    ],
+    "validate_clusters": false
+  }
