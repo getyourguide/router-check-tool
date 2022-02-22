@@ -18,6 +18,11 @@
             "retryPolicy": {
               "retryOn": "connect-failure,refused-stream,unavailable,cancelled,retriable-status-codes",
               "numRetries": 2,
+              "retryHostPredicate": [
+                {
+                  "name": "envoy.retry_host_predicates.previous_hosts"
+                }
+              ],
               "hostSelectionRetryMaxAttempts": "5",
               "retriableStatusCodes": [
                 503
