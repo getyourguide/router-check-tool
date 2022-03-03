@@ -1,0 +1,15 @@
+{
+    "tests": [
+      {
+        "test_name": "kubernetes-dashboard",
+        "input": {
+          "authority": "dashboard.sandbox20.gygkube.com",
+          "path": "/",
+          "method": "GET"
+        },
+        "validate": {
+          "cluster_name": "outbound|80||kubernetes-dashboard.kubernetes-dashboard.svc.cluster.local"
+        }
+      }
+    ]
+  }
