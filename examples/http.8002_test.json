@@ -3,7 +3,7 @@
       {
         "test_name": "kubernetes-dashboard",
         "input": {
-          "authority": "dashboard.sandbox20.gygkube.com",
+          "authority": "dashboard.sandbox20.k8s.com",
           "path": "/",
           "method": "GET"
         },
