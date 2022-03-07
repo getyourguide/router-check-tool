@@ -3,12 +3,20 @@
       {
         "test_name": "kubernetes-dashboard",
         "input": {
-          "authority": "dashboard.sandbox20.k8s.com",
+          "authority": "dashboard.sandbox20.gygkube.com",
           "path": "/",
           "method": "GET"
         },
         "validate": {
-          "cluster_name": "outbound|80||kubernetes-dashboard.kubernetes-dashboard.svc.cluster.local"
+          "cluster_name": "outbound|80||kubernetes-dashboard.kubernetes-dashboard.svc.cluster.local",
+          "request_header_matches": [
+            {
+              "name": "x-gyg-envoy-cluste",
+              "string_match": {
+                "exact": "outbound|80||kubernetes-dashboard.kubernetes-dashboard.svc.cluster.local"
+              }
+            }
+          ]
         }
       }
     ]

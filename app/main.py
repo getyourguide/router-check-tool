@@ -114,7 +114,7 @@ def main():
     parser.add_argument('--namespace',  type=str, default="istio-system", help='The namespace of the Deployment')
     parser.add_argument('--deploy',  type=str, default="ingressgateway", help='The deployment name to retrieve istio proxy route configuration from')
     parser.add_argument('--tests-dir',  type=str, required=True, help='The envoy router check tool tests directory')
-    parser.add_argument('--offline',  type=bool, help='Runs the tool without retrieving configuration from a live Pod')
+    parser.add_argument('--offline',  action='store_true', help='Runs the tool without retrieving configuration from a live Pod')
     
     args = parser.parse_args()
 
