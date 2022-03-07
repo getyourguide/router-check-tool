@@ -11,7 +11,7 @@
           "cluster_name": "outbound|80||kubernetes-dashboard.kubernetes-dashboard.svc.cluster.local",
           "request_header_matches": [
             {
-              "name": "x-gyg-envoy-cluste",
+              "name": "x-gyg-envoy-cluster",
               "string_match": {
                 "exact": "outbound|80||kubernetes-dashboard.kubernetes-dashboard.svc.cluster.local"
               }
