@@ -1,0 +1,53 @@
+{
+  "name": "http.8002",
+  "virtualHosts": [
+    {
+      "name": "dashboard.sandbox20.gygkube.com:8002",
+      "domains": [
+        "dashboard.sandbox20.gygkube.com",
+        "dashboard.sandbox20.gygkube.com:*"
+      ],
+      "routes": [
+        {
+          "match": {
+            "prefix": "/"
+          },
+          "route": {
+            "cluster": "outbound|80||kubernetes-dashboard.kubernetes-dashboard.svc.cluster.local",
+            "timeout": "0s",
+            "retryPolicy": {
+              "retryOn": "connect-failure,refused-stream,unavailable,cancelled,retriable-status-codes",
+              "numRetries": 2,
+              "hostSelectionRetryMaxAttempts": "5",
+              "retriableStatusCodes": [
+                503
+              ]
+            },
+            "maxGrpcTimeout": "0s"
+          },
+          "metadata": {
+            "filterMetadata": {
+              "istio": {
+                "config": "/apis/networking.istio.io/v1alpha3/namespaces/kubernetes-dashboard/virtual-service/kubernetes-dashboard"
+              }
+            }
+          },
+          "decorator": {
+            "operation": "kubernetes-dashboard.kubernetes-dashboard.svc.cluster.local:80/*"
+          },
+          "requestHeadersToAdd": [
+            {
+              "header": {
+                "key": "x-gyg-envoy-cluster",
+                "value": "outbound|80||kubernetes-dashboard.kubernetes-dashboard.svc.cluster.local"
+              },
+              "append": false
+            }
+          ]
+        }
+      ],
+      "includeRequestAttemptCount": true
+    }
+  ],
+  "validateClusters": false
+}
