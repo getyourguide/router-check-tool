@@ -1,7 +1,7 @@
 # Route Table Check Tool
 INTRODUCTION
  
-Modern management systems for container management takes care of a lot of heavy lifting when it comes to deploying and handling applications. They are often used together with a service mesh that takes care of additional areas like networking and security configuration. While these tools are great, they are also somewhat complex to set up and mistakes in how they are configured and deployed can have severe security consequences. 
+Modern management systems for container management takes care of a lot of heavy lifting when it comes to deploying and handling applications. They are often used together with a service mesh that takes care of additional areas like networking and security configuration. While these tools are great, they are also somewhat complex to set up and mistakes in how they are configured and deployed can have severe security consequences.  
  
      Service Mesh: Modern applications are typically architected as distributed collections of microservices, with each collection of microservices performing some discrete business function. A service mesh is a dedicated infrastructure layer that you can add to your applications. It allows you to transparently add capabilities like observability, traffic management, and security, without adding them to your own code. The term “service mesh” describes both the type of software you use to implement this pattern, and the security or network domain that is created when you use that software.
 
