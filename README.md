@@ -6,8 +6,6 @@ Modern management systems for container management takes care of a lot of heavy 
      Service Mesh: Modern applications are typically architected as distributed collections of microservices, with each collection of microservices performing some discrete business function.
      A service mesh is a dedicated infrastructure layer that you can add to your applications. It allows you to transparently add capabilities like observability, traffic management, and security, without adding them to your own code. 
      The term “service mesh” describes both the type of software you use to implement this pattern, and the security or network domain that is created when you use that software.
-     
-     ![image](https://user-images.githubusercontent.com/84518977/164183849-3e752b54-bc20-42f1-b410-823ac5e913b2.png)
 
      ISTIO: Istio is an opensource service mesh that layers transparently onto existing distributed applications. 
      Istio’s powerful features provide a uniform and more efficient way to secure, connect, and monitor services.
