@@ -1,7 +1,7 @@
 # Route Table Check Tool
 INTRODUCTION
  
-Modern management systems for container management takes care of a lot of heavy lifting when it comes to deploying and handling applications. They are often used together with a service mesh that takes care of additional areas like networking and security configuration. While these tools are great, they are also somewhat complex to set up and mistakes in how they are configured and deployed can have severe security consequences.  
+Modern management systems for container management takes care of a lot of heavy lifting when it comes to deploying and handling applications. They are often used together with a service mesh that takes care of additional areas like networking and security configuration. While these tools are great, they are also somewhat complex to set up and are higher in mantainence and mistakes in how they are configured and deployed can have severe security consequences.  
  
 - Service Mesh: Modern applications are typically architected as distributed collections of microservices, with each collection of microservices performing some discrete business function.
 A service mesh is a dedicated infrastructure layer that you can add to your applications. It allows you to transparently add capabilities like observability, traffic management, and security, without adding them to your own code. The term “service mesh” describes both the type of software you use to implement this pattern, and the security or network domain that is created when you use that software.
@@ -20,12 +20,12 @@ Istio is the path to load balancing, service-to-service authentication, and moni
 
 ![istio](images/istio2.png)
 
-As, it is our responsibility to manage how the traffic reaches the organization’s services, either from the internet, commonly known as north/south, or service to service, east/west. Since all the services of the organization runs on Kubernetes, and we have been using Istio for both network use cases, this brings the benefit of having the same networking configuration for ingress and service to service traffic. All the external routing configurations live in a single repository with more than 60 VirtualServices.
+It is our responsibility to manage how the traffic reaches the organization’s services, either from the internet, commonly known as north/south, or service to service, east/west. Since all the services of the organization runs on Kubernetes, and we have been using Istio for both network use cases, this brings the benefit of having the same networking configuration for ingress and service to service traffic. All the external routing configurations live in a single repository with more than 60 VirtualServices.
 
 Hence, this project aims to implement a Route table check tool which checks if the route returned by a router matches what is expected. The tool can be used to check cluster name, virtual cluster name, virtual host name, manual path rewrite, manual host rewrite, path redirect, and header field matches. Envoy route table check tool reads Envoy route and its own test cases to assert routing. We would, therefore, translate VirtualServices into Envoy routes/ Istio config to envoy config to use the native route table check tool. This would allow much richer/lower maintenance test cases as we can cover all of Istio API surface.
 
 # Life of a request: 
-Different domains at GetYourGuide can reach the internal services through different paths but mostly go over CloudFront.The figure below illustrates the architecture of the system. It shows the workflow/routeflow of a request to wwwgetyourguide.com and the components making up the ecosystem.
+Different domains at GetYourGuide can reach the internal services through different paths but mostly go over CloudFront.The figure below illustrates the architecture of the system. It shows the workflow/routeflow of a request to www.getyourguide.com and the components making up the ecosystem.
 
 ![lifecycle](images/lifecycle.png)
 
