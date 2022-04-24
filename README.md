@@ -190,5 +190,10 @@ Didn't find a registered implementation for name: 'envoy.retry_host_predicates.p
 # Version History
 Envoy [1.21.0 (January 12, 2020)](https://www.envoyproxy.io/docs/envoy/latest/version_history/v1.21.0)
 
+# References
+  - [GetYouGuide documentation](https://docs.gygadmin.com/computing/life-of-a-request)
+  - [The Istio service mesh](https://istio.io/latest/about/service-mesh/)
+  - [Preventing traffic routing regressions for Istio virtual services](https://inside.getyourguide.com/blog/2020/10/30/preventing-traffic-routing-regressions-for-istio-virtual-services)
+ 
 # Security
 For sensitive security matters please contact security@getyourguide.com 
