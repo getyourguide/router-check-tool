@@ -3,24 +3,22 @@ INTRODUCTION
  
 Modern management systems for container management takes care of a lot of heavy lifting when it comes to deploying and handling applications. They are often used together with a service mesh that takes care of additional areas like networking and security configuration. While these tools are great, they are also somewhat complex to set up and mistakes in how they are configured and deployed can have severe security consequences.  
  
-     Service Mesh: Modern applications are typically architected as distributed collections of microservices, with each collection of microservices performing some discrete business function.
-     A service mesh is a dedicated infrastructure layer that you can add to your applications. It allows you to transparently add capabilities like observability, traffic management, and security, without adding them to your own code. 
-     The term “service mesh” describes both the type of software you use to implement this pattern, and the security or network domain that is created when you use that software.
+- Service Mesh: Modern applications are typically architected as distributed collections of microservices, with each collection of microservices performing some discrete business function.
+A service mesh is a dedicated infrastructure layer that you can add to your applications. It allows you to transparently add capabilities like observability, traffic management, and security, without adding them to your own code. The term “service mesh” describes both the type of software you use to implement this pattern, and the security or network domain that is created when you use that software.
 
-  ![servicemesh](/Users/shirin.bellary/Desktop/RPShirin/router-check-tool/router-check-tool-1/Screen Shot 2022-04-20 at 8.30.18 AM.png)
+![servicemesh](images/servicemesh.png)
 
-     ISTIO: Istio is an opensource service mesh that layers transparently onto existing distributed applications. 
-     Istio’s powerful features provide a uniform and more efficient way to secure, connect, and monitor services.
-     Istio is the path to load balancing, service-to-service authentication, and monitoring – with few or no service code changes. 
-     An Envoy proxy is deployed along with each service that you start in your cluster, or runs alongside services running on VMs. 
+- ISTIO: Istio is an opensource service mesh that layers transparently onto existing distributed applications. 
+Istio’s powerful features provide a uniform and more efficient way to secure, connect, and monitor services.
+Istio is the path to load balancing, service-to-service authentication, and monitoring – with few or no service code changes. An Envoy proxy is deployed along with each service that you start in your cluster, or runs alongside services running on VMs. 
  
-     Envoy: Envoy is an L7 proxy and communication bus designed for large modern service-oriented architectures. Envoy is a self-contained process that is designed to run alongside every application server.
-     All of the Envoys form a transparent communication mesh in which each application sends and receives messages to and from localhost and is unaware of the network topology.
+- Envoy: Envoy is an L7 proxy and communication bus designed for large modern service-oriented architectures. Envoy is a self-contained process that is designed to run alongside every application server.All of the Envoys form a transparent communication mesh in which each application sends and receives messages to and from localhost and is unaware of the network topology.
      
-     Virtual Services: Virtual services, along with destination rules, are the key building blocks of Istio’s traffic routing functionality. 
-     A virtual service lets you configure how requests are routed to a service within an Istio service mesh, building on the basic connectivity and discovery provided by Istio and your platform. 
-     Each virtual service consists of a set of routing rules that are evaluated in order, letting Istio match each given request to the virtual service to a specific real destination within the mesh. 
-     Your mesh can require multiple virtual services or none depending on your use case. 
+- Virtual Services: Virtual services, along with destination rules, are the key building blocks of Istio’s traffic routing functionality. A virtual service lets you configure how requests are routed to a service within an Istio service mesh, building on the basic connectivity and discovery provided by Istio and your platform.  Each virtual service consists of a set of routing rules that are evaluated in order, letting Istio match each given request to the virtual service to a specific real destination within the mesh. Your mesh can require multiple virtual services or none depending on your use case. 
+
+![istio](images/istio1.png)
+
+![istio](images/istio2.png)
 
 As, it is our responsibility to manage how the traffic reaches the organization’s services, either from the internet, commonly known as north/south, or service to service, east/west. Since all the services of the organization runs on Kubernetes, and we have been using Istio for both network use cases, this brings the benefit of having the same networking configuration for ingress and service to service traffic. All the external routing configurations live in a single repository with more than 60 VirtualServices.
 
@@ -29,10 +27,12 @@ Hence, this project aims to implement a Route table check tool which checks if t
 # Life of a request: 
 Different domains at GetYourGuide can reach the internal services through different paths but mostly go over CloudFront.The figure below illustrates the architecture of the system. It shows the workflow/routeflow of a request to wwwgetyourguide.com and the components making up the ecosystem.
 
+![lifecycle](images/lifecycle.png)
+
   - Amazon CloudFront : There are many CloudFront Distributions as each domain or domain group has different needs for caching behaviours and other custom setup. By default, HTTP requests are redirected to HTTPS and TLS termination is done by CloudFront. For the customer website (eg: www.getyourguide.com), the static assets (images, css, etc) are stored in a Amazon S3 bucket which is served directly to clients (browsers/apps) offloading internal services.
    - Hub Origin ALB: In this layer it validates the authentication headers set by our CloudFront Distributions and the request is forwarded to the designated Production cluster.
    - Cluster NLB: Each EKS cluster is provisioned with a private Network Load Balancer. This is how all requests get into the cluster. Each listening port of the NLB goes to dedicated Target Groups. Requests to the marketplace website goes to the External Ingress Gateway deployment.
-   - The External Ingress Gateway :  is our entrypoint inside Kubernetes for HTTP requests coming from the internet. Envoy running in these Pods contains the routing configuration defined in the routes repo and forwards requests to the service matching the request parameters (eg.: Host, Path, Method, etc.).
+   - The External Ingress Gateway :  is our entrypoint inside Kubernetes for HTTP requests coming from the internet. Envoy running in these Pods contains the routing configuration defined in the [routes repo](https://github.com/getyourguide/routes) and forwards requests to the service matching the request parameters (eg.: Host, Path, Method, etc.).
      
 
 # How it works
@@ -118,7 +118,7 @@ Given below is a sample of configuration:
               - name: ...
                 presence_match: ...
 
- Have a look in the Testcase References to learn more about how to define the tests.  
+ Have a look in the [Testcase References](https://www.envoyproxy.io/docs/envoy/latest/configuration/operations/tools/router_check#config-tools-router-check-tool) to learn more about how to define the tests.  
 
 # Output
 
@@ -185,10 +185,10 @@ Didn't find a registered implementation for name: 'envoy.retry_host_predicates.p
  Future research would examine strategically on how to tackle and resolve the remaining two issues mentioned in challenges.
 
 # Authors
-Shirin Bellary (with Fernando Cainellias Supervisor)
+[Shirin Bellary](https://github.com/ShirinBellary) (with [Fernando Cainelli](https://github.com/cainelli) as Supervisor)
 
 # Version History
-Envoy 1.21.0 (January 12, 2020)
+Envoy [1.21.0 (January 12, 2020)](https://www.envoyproxy.io/docs/envoy/latest/version_history/v1.21.0)
 
 # Security
 For sensitive security matters please contact security@getyourguide.com 
