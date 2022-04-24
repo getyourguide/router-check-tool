@@ -5,13 +5,13 @@ Modern management systems for container management takes care of a lot of heavy 
  
 - Service Mesh: Modern applications are typically architected as distributed collections of microservices, with each collection of microservices performing some discrete business function.
 A service mesh is a dedicated infrastructure layer that you can add to your applications. It allows you to transparently add capabilities like observability, traffic management, and security, without adding them to your own code. The term “service mesh” describes both the type of software you use to implement this pattern, and the security or network domain that is created when you use that software.
-
+ 
 ![servicemesh](images/servicemesh.png)
 
 - ISTIO: Istio is an opensource service mesh that layers transparently onto existing distributed applications. 
 Istio’s powerful features provide a uniform and more efficient way to secure, connect, and monitor services.
 Istio is the path to load balancing, service-to-service authentication, and monitoring – with few or no service code changes. An Envoy proxy is deployed along with each service that you start in your cluster, or runs alongside services running on VMs. 
- 
+
 - Envoy: Envoy is an L7 proxy and communication bus designed for large modern service-oriented architectures. Envoy is a self-contained process that is designed to run alongside every application server.All of the Envoys form a transparent communication mesh in which each application sends and receives messages to and from localhost and is unaware of the network topology.
      
 - Virtual Services: Virtual services, along with destination rules, are the key building blocks of Istio’s traffic routing functionality. A virtual service lets you configure how requests are routed to a service within an Istio service mesh, building on the basic connectivity and discovery provided by Istio and your platform.  Each virtual service consists of a set of routing rules that are evaluated in order, letting Istio match each given request to the virtual service to a specific real destination within the mesh. Your mesh can require multiple virtual services or none depending on your use case. 
