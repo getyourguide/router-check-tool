@@ -16,7 +16,7 @@ class RouterCheck(object):
         tests_dir (str): The directory where the router check tool tests are. Note: The route configuration will be writen on the same dir.
     """
 
-    namespace: str 
+    namespace: str
     deployment: str
     tests_dir: str
 
@@ -24,8 +24,8 @@ class RouterCheck(object):
 
     def __init__(self, namespace: str, deployment: str, tests_dir: str):
         self.namespace = namespace
-        self.deployment = deployment 
-        self.tests_dir = tests_dir 
+        self.deployment = deployment
+        self.tests_dir = tests_dir
 
     def run_tests(self, offline: bool):
         """Dumps the Envoy route configuration, clean the incompatible bits of it and runs
@@ -92,7 +92,9 @@ class RouterCheck(object):
     def _config_cleanup(self):
         for route in self._routes:
             for vh in route["virtualHosts"]:
+                if vh.get("rateLimits") is not None: del vh["rateLimits"]
                 for route in vh["routes"]:
+                    if route.get("typedPerFilterConfig") is not None: del route["typedPerFilterConfig"]
                     try:
                         del route["route"]["retryPolicy"]["retryHostPredicate"]
                     except:
@@ -101,7 +103,7 @@ class RouterCheck(object):
     def _write_to_disk(self):
         for route in self._routes:
             route_name: str = route.get("name")
-            if route_name == None:
+            if route_name is None:
                 continue
 
             output_file: str = f"{self.tests_dir}/{route_name}.json"
@@ -109,13 +111,13 @@ class RouterCheck(object):
                 json.dump(route, f, indent=2)
 
 
-def main(): 
+def main():
     parser = argparse.ArgumentParser(description='Istio Envoy Router Check Tool')
     parser.add_argument('--namespace',  type=str, default="istio-system", help='The namespace of the Deployment')
     parser.add_argument('--deploy',  type=str, default="ingressgateway", help='The deployment name to retrieve istio proxy route configuration from')
     parser.add_argument('--tests-dir',  type=str, required=True, help='The envoy router check tool tests directory')
     parser.add_argument('--offline',  action='store_true', help='Runs the tool without retrieving configuration from a live Pod')
-    
+
     args = parser.parse_args()
 
     print()

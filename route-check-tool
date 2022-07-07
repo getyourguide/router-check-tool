@@ -2,4 +2,18 @@
 
 set -e
 
-python app/main.py $@
+#!/bin/bash
+
+VENV_DIR=.venv
+VENV_ACTIVATE=${VENV_DIR}/bin/activate
+
+cd `dirname $0`
+
+if [ ! -f "${VENV_ACTIVATE}" ]; then
+	echo "creating local venv: ${VENV_DIR}"
+	python3 -m venv ${VENV_DIR}
+fi
+
+source ${VENV_ACTIVATE}
+
+python3 app/main.py $@
