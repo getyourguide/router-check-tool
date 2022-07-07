@@ -1,23 +1,32 @@
 {
-    "tests": [
-      {
-        "test_name": "kubernetes-dashboard",
-        "input": {
-          "authority": "dashboard.sandbox20.gygkube.com",
-          "path": "/",
-          "method": "GET"
-        },
-        "validate": {
-          "cluster_name": "outbound|80||kubernetes-dashboard.kubernetes-dashboard.svc.cluster.local",
-          "request_header_matches": [
-            {
-              "name": "x-gyg-envoy-cluster",
-              "string_match": {
-                "exact": "outbound|80||kubernetes-dashboard.kubernetes-dashboard.svc.cluster.local"
-              }
-            }
-          ]
-        }
+  "tests": [
+    {
+      "test_name": "httpbin",
+      "input": {
+        "authority": "httpbin.sandbox25.gygkube.com",
+        "path": "/headers",
+        "method": "GET",
+        "additional_request_headers": [
+          {
+            "key": "authorization",
+            "value": "Basic dXNlcjpzZWNyZXQtcGFzcwo="
+          }
+        ]
+      },
+      "validate": {
+        "cluster_name": "outbound|80||httpbin.httpbin.svc.cluster.local"
       }
-    ]
-  }
+    },
+    {
+      "test_name": "httpbin-without-authorization-header",
+      "input": {
+        "authority": "httpbin.sandbox25.gygkube.com",
+        "path": "/headers",
+        "method": "GET"
+      },
+      "validate": {
+        "cluster_name": ""
+      }
+    }
+  ]
+}
