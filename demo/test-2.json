@@ -1,5 +1,3 @@
-{
-  "tests": [ 
   {
     "test_name": "httpbin",
     "input": {
@@ -28,5 +26,3 @@
       "cluster_name": ""
     }
   }
-  ]
-}

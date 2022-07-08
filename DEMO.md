@@ -3,7 +3,7 @@
 We have a demo application (`httpbin`) running on Kubernetes. One can call its endpoints from the internet:
 
 ```shell
-curl https://httpbin.sandbox25.gygkube.com/headers
+curl https://httpbin.sandbox25.gygkube.com/json
 ```
 
 The configuration used to expose this application to the internet is the following:
@@ -23,20 +23,20 @@ spec:
   http:
   - match:
     - uri:
-        exact: /headers
+        exact: /json
     route:
     - destination:
         host: httpbin.httpbin.svc.cluster.local
 ```
 
-The team wants to make sure the `/headers` endpoint would be reachable and will go to their httpbin service. The configuration is deployed to a test cluster and above they write a test case for it:
+The team wants to make sure the `/json` endpoint would be reachable and will go to their httpbin service. The configuration is deployed to a test cluster and above they write a test case for it:
 
 ```json
       {
         "test_name": "httpbin",
         "input": {
           "authority": "httpbin.sandbox25.gygkube.com",
-          "path": "/headers",
+          "path": "/json",
           "method": "GET"
         },
         "validate": {
@@ -55,7 +55,7 @@ httpbin
 Current route coverage: 50%
 ```
 
-The test is making sure GET requests to the /headers path would be routed to their service. With this confidence they can push this configuration to production.
+The test is making sure GET requests to the /json path would be routed to their service. With this confidence they can push this configuration to production.
 
 
 After some days the team notice a unusual traffic on that endpoint and it is overloading their service. After some investigations they notice a pattern, the requests does not come with a authorization header which they authenticate the users, but still resources was being starved serving invalid requests.
@@ -80,7 +80,7 @@ spec:
   http:
   - match:
     - uri:
-        exact: /headers
+        exact: /json
       headers:
         authorization:
           regex: Basic .+
@@ -92,10 +92,10 @@ spec:
 Applying the above configuration in a testing cluster we can validate it works:
 
 ```shell
-curl https://httpbin.sandbox25.gygkube.com/headers -H "Authorization: Basic token"  -o /dev/null -s -v 2>&1 | grep "< HTTP"
+curl https://httpbin.sandbox25.gygkube.com/json -H "Authorization: Basic token"  -o /dev/null -s -v 2>&1 | grep "< HTTP"
 < HTTP/2 200
 
-curl https://httpbin.sandbox25.gygkube.com/headers -o /dev/null -s -v 2>&1 | grep "< HTTP"
+curl https://httpbin.sandbox25.gygkube.com/json -o /dev/null -s -v 2>&1 | grep "< HTTP"
 < HTTP/2 404
 
 ```
@@ -108,7 +108,7 @@ To make sure nobody override this configuration they also add a test case for it
       "test_name": "httpbin",
       "input": {
         "authority": "httpbin.sandbox25.gygkube.com",
-        "path": "/headers",
+        "path": "/json",
         "method": "GET",
         "additional_request_headers": [
           {
@@ -125,7 +125,7 @@ To make sure nobody override this configuration they also add a test case for it
       "test_name": "httpbin-without-authorization-header",
       "input": {
         "authority": "httpbin.sandbox25.gygkube.com",
-        "path": "/headers",
+        "path": "/json",
         "method": "GET"
       },
       "validate": {
@@ -137,7 +137,7 @@ To make sure nobody override this configuration they also add a test case for it
 ```
 
 ```shell
-./route-check-tool --namespace istio-system --deploy external-ingressgateway  --tests-dir examples/ 2>&1 | head -n 50
+./route-check-tool --namespace istio-system --deploy external-ingressgateway  --tests-dir examples/
 
 # output
 httpbin

@@ -72,6 +72,8 @@ class RouterCheck(object):
             ]
 
             result = subprocess.run(cmd)
+            if result.returncode != 0:
+                sys.exit("test failed")
 
     def _get_envoy_routes(self):
         cmd = [

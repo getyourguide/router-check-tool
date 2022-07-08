@@ -1,0 +1,11 @@
+      {
+        "test_name": "httpbin",
+        "input": {
+          "authority": "httpbin.sandbox25.gygkube.com",
+          "path": "/json",
+          "method": "GET"
+        },
+        "validate": {
+          "cluster_name": "outbound|80||httpbin.httpbin.svc.cluster.local"
+        }
+      }
