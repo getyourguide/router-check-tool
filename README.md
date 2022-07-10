@@ -39,7 +39,7 @@ Different domains at GetYourGuide can reach the internal services through differ
 
    - Step 1. It retrieves envoy route configuration rom a live Pod from an istio proxy. It leverages Istio CLI (istioctl) to facilitate gathering the route configuration.
    - Step 2. Dumps the Envoy route configuration in the same directory where the router check tool tests are.
-   - Step 3. Cleans the incompatible bits of it. Example retry_host_predicate: used to reject a host based on predefined metadata match criteria. If any of the predicates reject the host, host selection will be reattempted.
+   - Step 3. Cleans the incompatible bits of it. Istio does not use the upstream Envoy, instead they use a forked version with Istio specifics which they maintain. Not all features available in upstream Envoy is present. That's why we have to clean it up as the Envoy route table check tool is built using upstream Envoy. Example retry_host_predicate: used to reject a host based on predefined metadata match criteria. If any of the predicates reject the host, host selection will be reattempted.
    - Step 4. Runs the envoy router check tool against it in a docker container.
 
 The route table check tool config is composed of an array of json test objects. Each test object is composed of three parts:
@@ -145,6 +145,7 @@ The router check tool will report route coverage at the end of a successful test
 
 # Building Envoy Router Check Tool
 
+Envoy route table check tool is not released by the Envoy team and we only have the source code. Therefore, we build the tool and make it usable via container.
 The tool can be built using docker:
 
 ```shell
