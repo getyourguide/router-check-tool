@@ -143,6 +143,13 @@ The router check tool will report route coverage at the end of a successful test
      Failed to meet coverage requirement: 7%
 
 
+# Requirements
+
+- docker
+- istioctl
+- python 3
+- kubectl access to a Kubernetes cluster running Istio
+
 # Building Envoy Router Check Tool
 
 Envoy route table check tool is not released by the Envoy team and we only have the source code. Therefore, we build the tool and make it usable via container.
