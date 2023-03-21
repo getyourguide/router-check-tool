@@ -25,15 +25,15 @@ It is our responsibility to manage how the traffic reaches the organization’s 
 Hence, this project aims to implement a Route table check tool which checks if the route returned by a router matches what is expected. The tool can be used to check cluster name, virtual cluster name, virtual host name, manual path rewrite, manual host rewrite, path redirect, and header field matches. Envoy route table check tool reads Envoy route and its own test cases to assert routing. We would, therefore, translate VirtualServices into Envoy routes/ Istio config to envoy config to use the native route table check tool. This would allow much richer/lower maintenance test cases as we can cover all of Istio API surface.
 
 # Life of a request: 
-Different domains at GetYourGuide can reach the internal services through different paths but mostly go over CloudFront.The figure below illustrates the architecture of the system. It shows the workflow/routeflow of a request to www.getyourguide.com and the components making up the ecosystem.
+Different domains at GetYourGuide can reach the internal services through different paths but mostly go over Cloudflare.The figure below illustrates the architecture of the system. It shows the workflow/routeflow of a request to www.getyourguide.com and the components making up the ecosystem.
 
-![lifecycle](images/lifecycle.png)
+![lifecycle](images/lifecycle.svg)
 
-  - Amazon CloudFront : There are many CloudFront Distributions as each domain or domain group has different needs for caching behaviours and other custom setup. By default, HTTP requests are redirected to HTTPS and TLS termination is done by CloudFront. For the customer website (eg: www.getyourguide.com), the static assets (images, css, etc) are stored in a Amazon S3 bucket which is served directly to clients (browsers/apps) offloading internal services.
-   - Hub Origin ALB: In this layer it validates the authentication headers set by our CloudFront Distributions and the request is forwarded to the designated Production cluster.
-   - Cluster NLB: Each EKS cluster is provisioned with a private Network Load Balancer. This is how all requests get into the cluster. Each listening port of the NLB goes to dedicated Target Groups. Requests to the marketplace website goes to the External Ingress Gateway deployment.
-   - The External Ingress Gateway :  is our entrypoint inside Kubernetes for HTTP requests coming from the internet. Envoy running in these Pods contains the routing configuration defined in the [routes repo](https://github.com/getyourguide/routes) and forwards requests to the service matching the request parameters (eg.: Host, Path, Method, etc.).
-     
+- Cloudflare: Consists of multiple zones. Each zone can manage one or more different domains and/or hostnames. The zones are responsible to route traffic to the origin such as the Cluster ALB, S3 or a third party like pagely.
+- Cluster ALB: An ALB that is only accessible through Cloudflare IPs. It is protected by Security Group and requires authentication set by our Cloudflare zones. All the domains exposed through Cloudflare (eg. www.getyourguide.com, www.gygadmin.com) goes over this ALB and requests are forwarded external-ingressgateway.
+- Hub Cluster ALB: This internet facing ALB is dynamically configured with rules for each cluster domain, *.clusterX.gygkube.com. It forwards traffic to individual EKS cluster NLB according to the Host header.
+- Hub Public NLB: An internet facing NLB that routes TCP ports to the active EKS cluster NLB. Use case: SSH proxy.
+- Hub Private NLB: Services running on Kubernetes that need to be reached privately to other non-Kubernetes workloads such as Databricks are exposed by AWS Endpoint Service and Istio, using an *.internal.gygservice.com domain.  
 
 # How it works
 
